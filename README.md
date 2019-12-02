@@ -1,51 +1,64 @@
-# Módulo Peticionamento e Intimação Eletrônicos
+# SEI em Números - Qlik Sense
 
-## Requisitos
-- SEI 3.1.2 instalado/atualizado.
-   - Verificar valor da constante de versão no arquivo /sei/web/SEI.php ou, após logado no sistema, parando o mouse sobre a logo do SEI no canto superior esquerdo.
-- Antes de executar os scripts de instalação/atualização, o usuário de acesso aos bancos de dados do SEI e do SIP, constante nos arquivos ConfiguracaoSEI.php e ConfiguracaoSip.php, deverá ter permissão de acesso total ao banco de dados, permitindo, por exemplo, criação e exclusão de tabelas.
-- Os códigos-fonte do Módulo podem ser baixados a partir do link a seguir, devendo sempre utilizar a versão mais recente: [https://softwarepublico.gov.br/gitlab/anatel/mod-sei-peticionamento/tags](https://softwarepublico.gov.br/gitlab/anatel/mod-sei-peticionamento/tags "Clique e acesse")
-- Solicitamos que os Órgãos que tenham instalado o Módulo preencham a pesquisa a seguir, para termos um feedback sobre sua utilização: [https://goo.gl/gubYLL](https://goo.gl/gubYLL "Clique e acesse")
+Painel de _Business Intelligence_ da Anatel sobre o SEI elaborado na ferramenta Qlik Sense.
 
-## Procedimentos para Instalação
-1. Antes, fazer backup dos bancos de dados do SEI e do SIP.
-2. Carregar no servidor os arquivos do módulo localizados na pasta "/sei/web/modulos/peticionamento" e os scripts de instalação/atualização "/sip/scripts/sip_atualizar_versao_modulo_peticionamento.php" e "/sei/scripts/sei_atualizar_versao_modulo_peticionamento.php".
-   - **Caso se trate de atualização de versão anterior do Módulo**, antes de copiar os códigos-fontes para a pasta "/sei/web/modulos/peticionamento", é necessário excluir os arquivos anteriores pré existentes na mencionada pasta, para não manter arquivos de códigos que foram renomeados ou descontinuados.
-3. Editar o arquivo "/sei/config/ConfiguracaoSEI.php", tomando o cuidado de usar editor que não altere o charset do arquivo, para adicionar a referência à classe de integração do módulo e seu caminho relativo dentro da pasta "/sei/web/modulos" na array 'Modulos' da chave 'SEI':
+## Tutorial
 
-		'SEI' => array(
-			'URL' => 'http://[Servidor_PHP]/sei',
-			'Producao' => false,
-			'RepositorioArquivos' => '/var/sei/arquivos',
-			'Modulos' => array('PeticionamentoIntegracao' => 'peticionamento',)
-			),
+1. Registre-se no site da [Qlik](https://qlikid.qlik.com/register) para criar seu Qlik ID, com usuário e senha.
+2. Faça o download do [Qlik Sense Desktop](https://www.qlik.com/pt-br/products/qlik-sense/desktop) e instale.
+3. Execute a aplicação e entre com seu usuário e senha criados no **passo 1**
+4. Copie o arquivo [SEI_em_Números.qvf](https://softwarepublico.gov.br/gitlab/sei/sei-query/repository/archive.zip?ref=master) para a pasta **"Documentos\Qlik\Sense\Apps"** (Windows).
+5. Volte para o Qlik Sense Desktop, o aplicativo **SEI em Números** deve aparecer disponível para execução.
+6. Na primeira vez que for aberto será exibida uma mensagem dizendo que **"Este aplicativo não contém dados"**. Pressione o botão **"Abrir"**.
+7. Será aberta a tela do **"Editor da carga de dados"** para que você crie a conexão com o seu banco de dados do SEI, no seu ambiente.
+8. Pressione o botão **"Criar nova conexão"**, no canto superior direito da tela.
+9. Selecione o conector correto para o seu banco de dados, na Anatel usamos o **MySQL Enterprise Edition** e continuaremos o tutorial usando este conector.
+10. Preencha o host, o nome do banco do sei (p.ex producao_sei3), o usuário com permissões de consulta e sua senha.
+	- Recomendamos a adição de dois campos na secção **"Advanced"**
+		- Name: **QueryTimeout** 		| Value: **-1**
+		- Name: **Timeout**					| Value: **0**
+11. Dê um nome para sua conexão usando o campo **"Name"** ao final da modal, por exemplo **SEIPRODUCAO** e Crie/Salve a conexão.
+12. Na seção **"Main"**, ao final do script padrão, adicione uma linha para informar o Qlik para usar a conexão criada:
 
-4. Antes de seguir para os próximos passos, é importante conferir se o Módulo foi corretamente declarado no arquivo "/sei/config/ConfiguracaoSEI.php". Acesse o menu **Infra > Módulos** e confira se consta a linha correspondente ao Módulo, pois, realizando os passos anteriores da forma correta, independente da execução do script de banco, o Módulo já deve ser reconhecido na tela aberta pelo menu indicado.
-5. Rodar o script de banco "/sip/scripts/sip_atualizar_versao_modulo_peticionamento.php" em linha de comando no servidor do SIP, verificando se não houve erro em sua execução, em que ao final do log deverá ser informado "FIM". Exemplo de comando de execução:
+    ```
+    (...)
+    SET MonthNames='jan;fev;mar;abr;mai;jun;jul;ago;set;out;nov;dez';
+    SET LongMonthNames='janeiro;fevereiro;março;abril;maio;junho;julho;agosto;setembro;outubro;novembro;dezembro';
+    SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
+    SET LongDayNames='segunda-feira;terça-feira;quarta-feira;quinta-feira;sexta-feira;sábado;domingo';
+    
+    LIB CONNECT TO 'SEIPRODUCAO';
+    ```
 
-		/usr/bin/php -c /etc/php.ini /opt/sip/scripts/sip_atualizar_versao_modulo_peticionamento.php > atualizacao_peticionamento_sip.log
+13. Pressione o botão **"Salvar"** no canto superior esquerdo e em seguida o botão **"Carregar dados"** no canto superior direito.
+14. Aguarde a carga de dados, quando estiver completa alterne para a **"Visão geral do aplicativo"** a partir do primeiro botão da barra de ferramentas, logo abaixo das guias.
+15. Os painéis deverão estar funcionais com os dados do SEI da sua Instituição.
 
-6. Rodar o script de banco "/sei/scripts/sei_atualizar_versao_modulo_peticionamento.php" em linha de comando no servidor do SEI, verificando se não houve erro em sua execução, em que ao final do log deverá ser informado "FIM". Exemplo de comando de execução:
+## _Queries_
 
-		/usr/bin/php -c /etc/php.ini /opt/sei/scripts/sei_atualizar_versao_modulo_peticionamento.php > atualizacao_modulo_peticionamento_sei.log
+Para ter acesso às _queries_ utilizadas na construção do _dashboard_ é muito simples:
 
-7. **IMPORTANTE**: Na execução dos dois scripts de banco acima, ao final deve constar o termo "FIM", o "TEMPO TOTAL DE EXECUÇÃO" e a informação de que a instalação/atualização foi realizada com sucesso na base de dados correspondente (SEM ERROS). Do contrário, o script não foi executado até o final e algum dado não foi inserido/atualizado no respectivo banco de dados, devendo recuperar o backup do banco e repetir o procedimento.
-   - Constando ao final da execução do script as informações indicadas, pode logar no SEI e SIP e verificar no menu **Infra > Parâmetros** dos dois sistemas se consta o parâmetro "VERSAO_MODULO_PETICIONAMENTO" com o valor da última versão do módulo.
-8. Em caso de erro durante a execução do script, verificar (lendo as mensagens de erro e no menu Infra > Log do SEI e do SIP) se a causa é algum problema na infraestrutura local ou ajustes indevidos na estrutura de banco do core do sistema. Neste caso, após a correção, deve recuperar o backup do banco pertinente e repetir o procedimento, especialmente a execução dos scripts de banco indicados acima.
-	- Caso não seja possível identificar a causa, entrar em contato com: Nei Jobson - neijobson@anatel.gov.br
-9. Após a execução com sucesso, com um usuário com permissão de Administrador no SEI, seguir os passos dispostos no tópico "Orientações Negociais" mais abaixo.
+1. Alterne para o **"Editor da carga de dados"** a partir do primeiro botão da barra de ferramentas, logo abaixo das guias.
+2. Haverão várias seções na lateral esquerda do aplicativo, em fundo cinza escuro.
+3. Navegue pelas seções para ter acesso às _queries_ utilizadas.
+4. As _queries_ são executadas em sequência, na mesma ordem que as seções são exibidas, de cima para baixo, **NÃO ALTERE ESSA ORDEM** sob pena de a aplicação deixar de funcionar, pois há scripts que dependem de outros.
+5. Os nomes das seções procuram representar ao máximo as entidades em que são buscados os dados ou aos painéis do _dashboard_.
 
-## Orientações Negociais
-1. Imediatamente após a instalação com sucesso, com usuário com permissão de "Administrador" do SEI, acessar os menus de administração do Módulo pelo seguinte caminho: Administração > Peticionamento Eletrônico. Somente com tudo parametrizado adequadamente será possível o uso do módulo pelos Usuários Externos por meio da tela de Acesso Externo do SEI:
+## Observações Negociais:
 
-		http://[Servidor_PHP]/sei/controlador_externo.php?acao=usuario_externo_logar&id_orgao_acesso_externo=0
+### Painel: Documentos Preparatórios em Processos Concluídos
 
-2. O script de banco do SIP já cria todos os Recursos e Menus e os associam automaticamente ao Perfil "Básico" ou ao Perfil "Administrador".
-	- Independente da criação de outros Perfis, os recursos indicados para o Perfil "Básico" ou "Administrador" devem manter correspondência com os Perfis dos Usuários internos que utilizarão o Módulo e dos Usuários Administradores do Módulo.
-	- O SIP não controla Perfil próprio para os Usuários Externos, cabendo diretamente ao código do Módulo o controle devido junto aos Recursos e Menus criados pelo Módulo para os Usuários Externos.
-	- Tão quanto ocorre com as atualizações do SEI, versões futuras deste Módulo continuarão a atualizar e criar Recursos e associá-los apenas aos Perfis "Básico" e "Administrador".
-	- Todos os recursos do Módulo iniciam pelo sufix **"md_pet_"**.
-3. Acesse no link a seguir o Manual de Administração: AINDA EM ELABORAÇÃO
-4. Acesse no link a seguir o Manual do Usuário Interno: http://bit.ly/SEI_Mod_Pet_Interno
-5. Acesse no link a seguir o Manual do Usuário Externo: http://bit.ly/SEI_Usuario_Externo
-	- Não foi possível fazer um Manual do Usuário Externo genérico para qualquer órgão, em razão das especificidades de cada órgão quanto aos procedimentos de credenciamento dos Usuários Externos e até mesmo de parametrização do Módulo. De qualquer forma, o Manual do Usuário Externo do SEI elaborado pela Anatel, acima, que pode ser quase que completamente aproveitado.
+O mencionado painel tem como base a Hipótese Legal afeta a "Documento Preparatório", conforme Art. 7º, § 3º, da Lei nº 12.527/2011. Dessa forma, no **"Editor da carga de dados"** edite a seção "Documento Preparatório" e substitua o id "33" pelo id_hipotese_legal correspondente ao constante no SEI da instituição.
+
+### Painel: Publicações Oficiais
+
+Este painel somente tem aplicabilidade/utilidade para instalações do SEI que utilizem a publicação em Boletim de Serviço Eletrônico, utilizando os recursos próprios do SEI afetos à Publicação Interna.
+
+1. Para o correto funcionamento do painel **Publicações Oficiais** é necessário que sejam utilizados os Grupos de Tipos de Documentos, no SEI.
+2. Os Grupos que foram convencionados na Anatel são **Publicáveis** e **Publicáveis que Sempre Exigem DOU**, de modo que:
+	- Todos os Tipos de Documentos que podem ser publicados no Boletim de Serviço Eletrônico estejam no grupo **Publicáveis**; e
+	- Todos os Tipos de Documentos que sempre exigem publicação no DOU estejam no grupo **Publicáveis que Sempre Exigem DOU**.
+
+### Painéis: Peticionamentos e Intimações Eletrônicas
+
+Estes painéis somente tem aplicabilidade/utilidade para instalações do SEI que utilizem o Módulo de Peticionamento e Intimação Eletrônicos na versão 2.0.0 ou superior.
