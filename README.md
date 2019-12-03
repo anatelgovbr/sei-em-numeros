@@ -48,7 +48,11 @@ Para ter acesso às _queries_ utilizadas na construção do _dashboard_ é muito
 
 ### Painel: Documentos Preparatórios em Processos Concluídos
 
-O mencionado painel tem como base a Hipótese Legal afeta a "Documento Preparatório", conforme Art. 7º, § 3º, da Lei nº 12.527/2011. Dessa forma, no **"Editor da carga de dados"** edite a seção "Documento Preparatório" e substitua o id "33" pelo id_hipotese_legal correspondente ao constante no SEI da instituição.
+O mencionado painel tem como base a Hipótese Legal afeta a "Documento Preparatório", conforme Art. 7º, § 3º, da Lei nº 12.527/2011. Dessa forma, no **"Editor da carga de dados"** edite a seção "Documentos Preparatórios em Processo Concluídos" e substitua o id "33" pelo id_hipotese_legal correspondente no SEI da instituição.
+
+### Painel: Protocolos Pendentes de Análise
+
+O mencionado painel tem como base a Hipótese Legal afeta a "Protocolo -Pendente Análise de Restrição de Acesso", conforme Art. 6º, III, da Lei nº 12.527/2011, no caso de protocolização física de documentos pelo Protocolo da instituição e, para salvaguardar possível informação restrita, inclui-se os documentos com esta restrição para as áreas técnicas revisarem após análise do teor do documento. Dessa forma, no **"Editor da carga de dados"** edite a seção "Protocolos Pendentes de Análise" e substitua o id "43" pelo id_hipotese_legal correspondente no SEI da instituição.
 
 ### Painel: Publicações Oficiais
 
