@@ -7,7 +7,7 @@ Painel de _Business Intelligence_ da Anatel sobre o SEI elaborado na ferramenta 
 1. Registre-se no site da [Qlik](https://qlikid.qlik.com/register) para criar seu Qlik ID, com usuário e senha.
 2. Faça o download do [Qlik Sense Desktop](https://www.qlik.com/pt-br/products/qlik-sense/desktop) e instale.
 3. Execute a aplicação e entre com seu usuário e senha criados no **passo 1**
-4. Copie o arquivo [SEI_em_Números.qvf](https://softwarepublico.gov.br/gitlab/sei/sei-query/repository/archive.zip?ref=master) para a pasta **"Documentos\Qlik\Sense\Apps"** (Windows).
+4. Copie o arquivo [SEI_em_Números.qvf](https://softwarepublico.gov.br/gitlab/anatel/sei-em-numeros/repository/archive.zip?ref=master) para a pasta **"Documentos\Qlik\Sense\Apps"** (Windows).
 5. Volte para o Qlik Sense Desktop, o aplicativo **SEI em Números** deve aparecer disponível para execução.
 6. Na primeira vez que for aberto será exibida uma mensagem dizendo que **"Este aplicativo não contém dados"**. Pressione o botão **"Abrir"**.
 7. Será aberta a tela do **"Editor da carga de dados"** para que você crie a conexão com o seu banco de dados do SEI, no seu ambiente.
