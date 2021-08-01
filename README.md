@@ -5,21 +5,23 @@ Painel de _Business Intelligence_ da Anatel sobre o SEI elaborado na ferramenta 
 - SEI 3.1.x instalado/atualizado.
 
 ## Tutorial
-1. Registre-se no site da [Qlik](https://qlikid.qlik.com/register) para criar seu Qlik ID, com usuário e senha.
-2. Faça o download do [Qlik Sense Desktop](https://www.qlik.com/pt-br/products/qlik-sense/desktop) e instale.
-3. Execute a aplicação e entre com seu usuário e senha criados no **passo 1**
-4. Copie o arquivo [SEI_em_Números.qvf](https://github.com/anatelgovbr/sei-em-numeros/archive/master.zip) para a pasta **"Documentos\Qlik\Sense\Apps"** (Windows).
-5. Volte para o Qlik Sense Desktop, o aplicativo **SEI em Números** deve aparecer disponível para execução.
-6. Na primeira vez que for aberto será exibida uma mensagem dizendo que **"Este aplicativo não contém dados"**. Pressione o botão **"Abrir"**.
-7. Será aberta a tela do **"Editor da carga de dados"** para que você crie a conexão com o seu banco de dados do SEI, no seu ambiente.
-8. Pressione o botão **"Criar nova conexão"**, no canto superior direito da tela.
-9. Selecione o conector correto para o seu banco de dados, na Anatel usamos o **MySQL Enterprise Edition** e continuaremos o tutorial usando este conector.
-10. Preencha o host, o nome do banco do sei (p.ex producao_sei3), o usuário com permissões de consulta e sua senha.
+1. Se ainda não tiver, registre-se no site da [Qlik](https://qlikid.qlik.com/register) para criar seu Qlik ID, com usuário e senha.
+2. Faça o download do [Qlik Sense Desktop](https://qlik.com/qliksensedesktopdownload) e instale.
+	- Veja passo a passo de como ativar o Qlik Sense Desktop: https://www.youtube.com/watch?v=d4QcWuEQz8Y
+	- Vide um curso básico e rápido sobre o Qlik Sense: https://www.youtube.com/watch?v=YamtfoWrfjw
+4. Execute a aplicação e entre com seu usuário e senha criados no **passo 1**
+5. Copie o arquivo [SEI_em_Números.qvf](https://github.com/anatelgovbr/sei-em-numeros/raw/master/qliksense_painel_arquivo_qvf/SEI%20em%20N%C3%BAmeros.qvf) para a pasta **"Documentos\Qlik\Sense\Apps"** no Windows.
+6. Volte para o Qlik Sense Desktop, o aplicativo **SEI em Números** deve aparecer disponível para execução.
+7. Na primeira vez que for aberto será exibida uma mensagem dizendo que **"Este aplicativo não contém dados"**. Pressione o botão **"Abrir"**.
+8. Será aberta a tela do **"Editor da carga de dados"** para que você crie a conexão com o seu banco de dados do SEI, no seu ambiente.
+9. Pressione o botão **"Criar nova conexão"**, no canto superior direito da tela.
+10. Selecione o conector correto para o seu banco de dados, na Anatel usamos o **MySQL Enterprise Edition** e continuaremos o tutorial usando este conector.
+11. Preencha o host, o nome do banco do sei (p.ex: sei_read_only), o usuário com permissões de consulta e sua senha.
 	- Recomendamos a adição de dois campos na secção **"Advanced"**
 		- Name: **QueryTimeout** 		| Value: **-1**
 		- Name: **Timeout**					| Value: **0**
-11. Dê um nome para sua conexão usando o campo **"Name"** ao final da modal, por exemplo **SEIPRODUCAO** e Crie/Salve a conexão.
-12. Na seção **"Main"**, ao final do script padrão, adicione uma linha para informar o Qlik para usar a conexão criada:
+12. Dê um nome para sua conexão usando o campo **"Name"** ao final da modal, por exemplo **SEI_READ_ONLY** e Crie/Salve a conexão.
+13. Na seção **"Main"**, ao final do script padrão, adicione uma linha para informar o Qlik para usar a conexão criada:
 
     ```
     (...)
@@ -28,7 +30,7 @@ Painel de _Business Intelligence_ da Anatel sobre o SEI elaborado na ferramenta 
     SET DayNames='seg;ter;qua;qui;sex;sáb;dom';
     SET LongDayNames='segunda-feira;terça-feira;quarta-feira;quinta-feira;sexta-feira;sábado;domingo';
     
-    LIB CONNECT TO 'SEIPRODUCAO';
+    LIB CONNECT TO 'SEI_READ_ONLY';
     ```
 
 13. Pressione o botão **"Salvar"** no canto superior esquerdo e em seguida o botão **"Carregar dados"** no canto superior direito.
@@ -63,5 +65,5 @@ Este painel somente tem aplicabilidade/utilidade para instalações do SEI que u
 2. O gráfico sobre "Tempo Médio dos Processos por Tipo de Processo (em dias)" reproduziu a _query_ original do SEI que monta o relatório do menu Estatísticas > Desempenho de Processos, tendo em consideração no cálculo apenas os processos concluídos.
 2.1. A _query_ deste gráfico somente funciona no SEI 3.1. Para funcionar no SEI 3.0, no **"Editor da carga de dados"** edite a seção "Desemp. de Processos - Tempo" para comentar a linha com o destaque "SEI 3.1.X" e descomentar a linha com o destaque "SEI 3.0.X".
 
-### Painéis: Peticionamentos e Intimações Eletrônicas
+### Painéis: Peticionamentos, Intimações Eletrônicas e Procurações Eletrônicas
 Estes painéis somente tem aplicabilidade/utilidade para instalações do SEI que utilizem o Módulo de Peticionamento e Intimação Eletrônicos na versão 3.1.0 ou superior.
