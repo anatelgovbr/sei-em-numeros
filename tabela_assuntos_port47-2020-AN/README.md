@@ -2,7 +2,7 @@
 Scripts para criar Nova Tabela de Assuntos Arquivísticos com todos os Assuntos de Atividade-Meio da Portaria nº 47/2020 do Arquivo Nacional.
 
 ## Requisitos
-- SEI 3.1.x instalado/atualizado.
+- SEI 3.1.x ou SEI 4.0.x instalado/atualizado.
 - A Base de Referência para o Poder Executivo para o SEI 4.0.x já está com a Tabela de Assuntos Arquivísticos atualizada segundo a Portaria nº 47/2020 do Arquivo Nacional.
 	- Vide: https://github.com/spbgovbr/sei-db-ref-executivo
 
