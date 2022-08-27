@@ -1,14 +1,54 @@
 # Script PHP para deletar versões de seção de documentos gerados no SEI
-Script PHP para deletar versões de seção de documentos gerados no SEI, assinados e já bloqueados (caneta preta) a partir de determinado mês para trás do dia da execução do script.
+Script PHP para deletar versões de seção de documentos gerados no SEI, bloqueados (caneta preta) e assinados há mais de X meses da data da execução do script.
 
 ## Requisitos
-- Para o SEI 3.1.x, utilizar o script constante na pasta "script_php_sei3.1"
-- Para o SEI 4.0.x, , utilizar o script constante na pasta "script_php_sei4.0"
+- Para o SEI 3.1.x, utilizar o script constante na pasta "**script_php_sei3.1**"
+- Para o SEI 4.0.x, , utilizar o script constante na pasta "**script_php_sei4.0**"
 
 ## Orientações
-1. Antes de tudo, vide na página do Arquivo Nacional: https://www.gov.br/arquivonacional/pt-br/servicos/gestao-de-documentos/orientacao-tecnica-1/codigo-de-classificacao-e-tabela-de-temporalidade-e-destinacao-de-documentos-de-arquivo
-	- Portaria nº 47, de 14 de fevereiro de 2020: https://www.in.gov.br/en/web/dou/-/portaria-n-47-de-14-de-fevereiro-de-2020-244298005
-	- Código de classificação e Tabela de temporalidade e destinação de documentos relativos às atividades-meio do Poder Executivo federal (versão corrigida em junho de 2020): https://www.gov.br/arquivonacional/pt-br/servicos/gestao-de-documentos/orientacao-tecnica-1/codigo-de-classificacao-e-tabela-de-temporalidade-e-destinacao-de-documentos-de-arquivo/cod_classif_e_tab_temp_2019_m_book_digital_25jun2020_1.pdf
-2. Os scripts estão na pasta "tabela_assuntos_port47-2020-AN": https://github.com/anatelgovbr/sei-em-numeros/tree/master/tabela_assuntos_port47-2020-AN
-	- Em todos os scripts tem um cabeçalho de orientações para sua execução.
-	- Atenção especial para o item: "4) Verifique ANTES o alinhamento do maior ID na tabela principal com a seq_ correspondente, onde o maior ID deve ser o último na seq_ e o AUTO INCREMENT sobre ele deve ser esse maior ID +1. Se precisar, realinhe o maior valor na tabea seq_, pois, do contrário, vai dar erro de PK duplicada no insert na tabela principal."
+1. O presente script foi desenvolvido originalmente pelo TRF4 para o SEI 4.1.
+	- **Atenção**: No SEI 4.1 virá o script definitivo e terá coluna adicional no banco de dados para informar que determinado documento já passou pelo processamento de expurgo de versões de seção de documentos assinados, fazendo com que sua próxima execução seja mais rápida.
+	- Até o SEI 4.1, utilizando os scripts aqui indicados, adaptados para o SEI 3.1 e para o SEI 4.0, toda execução do script levará MUITO tempo de processamento, pois analisará praticamente todos os documentos novamente.
+2. Ao executar o script será solicitado um usuário/senha de banco que deve ter permissão de acesso total à base de dados, para criação ou exclusão de tabelas (permissão de DDL).
+3. Rodar o script para limpeza (expurgo) de versões de seção de documentos gerados no SEI, bloqueados (caneta preta) e assinados há mais de X meses da data da execução do script:
+
+		/usr/bin/php -c /etc/php.ini /opt/sei/scripts/sei_remover_versoes_secoes_documentos_assinados.php 6 2>&1 >> remover_versoes.log
+		
+	- Onde o "**6**" é o parâmetro do número de meses para trás, a contar da data da execução do script, a partir da qual o sistema fará a limpeza (expurgo) de versões de seção de documentos gerados no SEI, bloqueados (caneta preta) e assinados até o primeiro documento constante no banco que atenda às regras.
+
+4. Dependendo da quantidade de documentos gerados, assinados e com caneta preta existentes na instalação do SEI, o tempo de execução do script pode levar muitas horas.
+	- O script pode ser executado em qualquer horário, pois não afeta o desempenho no uso da aplicação.
+5. Em uma instalação com quase 6 milhões de linhas na tabela "versao_secao_documento" retornados pelo SELECT abaixo utilizando uma "dth_atualizacao" de 6 meses do dia da execução, o tempo total de execução do script PHP foi de cerca de 13 horas.
+
+		SELECT
+		-- d.id_documento
+		-- ,d.sin_bloqueado
+		-- ,d.sta_documento
+		-- ,p.protocolo_formatado
+		-- ,p.sta_protocolo
+		-- ,sd.id_secao_documento
+		count(vsd.id_versao_secao_documento)
+		-- ,vsd.dth_atualizacao
+		-- ,vsd.sin_ultima
+		FROM documento d
+		-- INNER JOIN protocolo p ON d.id_documento = p.id_protocolo
+		INNER JOIN secao_documento sd ON d.id_documento = sd.id_documento
+		INNER JOIN versao_secao_documento vsd ON sd.id_secao_documento = vsd.id_secao_documento AND vsd.sin_ultima ='N' AND vsd.dth_atualizacao < '2022-02-27 00:00:00'
+		WHERE d.sta_documento ='I' AND d.sin_bloqueado ='S'
+		ORDER BY d.id_documento ASC;
+
+6. Após o término da execução, executar a linha de comando abaixo para visualziar o log:
+
+		tail -n 1000 remover_versoes.log
+
+7. As últimas linhas do log de execução do script deve conter a expressão:
+		
+		12435 - Remover Versões Assinados – XXXXXXX documentos em xxxxxxxx s
+		12436 - "Operação Finalizada".
+
+8. Com a limpeza realizada pelo script os procedimentos de backup e restore do banco de dados do SEI já ficam mais leves e rápidos.
+9. Mas se quiser otimizar a tabela "versao_secao_documento" e perceber a diminuição geral de espaço na referida tabela no banco atual, para o MySQL (por exemplo), é necessário executar o comando abaixo.
+
+		OPTIMIZE TABLE versao_secao_documento;
+		
+	- **Atenção**: o comando acima deve ser executado APENAS em janela de manutenção, pois deixa o SEI inoperante durante sua execução, que pode durar algumas horas. Testar antes em uma cópia do banco para estimar com precisão quantas horas levará de execução desse comando no banco.
