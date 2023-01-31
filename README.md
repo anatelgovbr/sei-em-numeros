@@ -3,6 +3,7 @@ Painel de _Business Intelligence_ da Anatel sobre o SEI elaborado na ferramenta 
 
 ## Requisitos
 - SEI 3.1.x instalado/atualizado.
+- Acesse o [Dicionário de Dados do SEI e do SIP](https://docs.google.com/spreadsheets/d/e/2PACX-1vRNv8-VinN14cgAd1pCpjf-Y8-g_0SFTxy96JRYwtHlGT8kq6OkhnYM0B-58AkusFF0Sr0NoZtJbw48/pubhtml#).
 
 ## Tutorial
 1. Se ainda não tiver, registre-se no site da [Qlik](https://qlikid.qlik.com/register) para criar seu Qlik ID, com usuário e senha.
