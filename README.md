@@ -5,11 +5,11 @@ Painel de _Business Intelligence_ da Anatel sobre o SEI elaborado na ferramenta 
 - Esse projeto não é mantido atualizado!
 - Foi criado apenas para dar uma ideia inicial de como fazer painéis para o SEI, com queires adequadas e modelagem de BI.
 - Como cada órgão possui suas próprias ferramentas de BI e com atualizações e necessidades diferentes e constantes, impede manter esse repositório atualizado.
-- O mais importante é entender a lógica e sempre consultar o [Dicionário de Dados do SEI e do SIP](https://docs.google.com/spreadsheets/d/e/2PACX-1vRNv8-VinN14cgAd1pCpjf-Y8-g_0SFTxy96JRYwtHlGT8kq6OkhnYM0B-58AkusFF0Sr0NoZtJbw48/pubhtml#).
+- O mais importante é entender a lógica e sempre consultar o [Dicionários de Dados do SEI, módulos do SEI e SIP](https://github.com/anatelgovbr/mod-sei-stack-ia-apoio-dev/tree/main/docs/dicionario_dados).
 
 ## Requisitos
 - SEI 3.1.x instalado/atualizado.
-- Acesse o [Dicionário de Dados do SEI e do SIP](https://docs.google.com/spreadsheets/d/e/2PACX-1vRNv8-VinN14cgAd1pCpjf-Y8-g_0SFTxy96JRYwtHlGT8kq6OkhnYM0B-58AkusFF0Sr0NoZtJbw48/pubhtml#).
+- Acesse o [Dicionários de Dados do SEI, módulos do SEI e SIP](https://github.com/anatelgovbr/mod-sei-stack-ia-apoio-dev/tree/main/docs/dicionario_dados).
 
 ## Tutorial
 1. Se ainda não tiver, registre-se no site da [Qlik](https://qlikid.qlik.com/register) para criar seu Qlik ID, com usuário e senha.
