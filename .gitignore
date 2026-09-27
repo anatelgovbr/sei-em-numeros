@@ -1,0 +1,18 @@
+# IDE e editores
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+nbproject/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+
+# Cache
+*.cache
